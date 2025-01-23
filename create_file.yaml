@@ -1,0 +1,8 @@
+---
+- name: Create a file on Windows Host
+  hosts: 192.168.1.144
+  tasks:
+    - name: Create a file with content
+      win_copy:
+        content: "This is a test file created by Ansible!"
+        dest: "C:\\Temp\\ansible_test.txt"
