@@ -1,0 +1,31 @@
+---
+- name: Create a folder and copy multiple files on Windows
+  hosts: 192.168.1.144
+  tasks:
+    - name: Create a folder
+      win_file:
+        path: "C:\\Temp\\AnsibleTest"
+        state: directory
+
+    - name: Copy a file with content
+      win_copy:
+        content: "File 1: This is the first test file!"
+        dest: "C:\\Temp\\AnsibleTest\\file1.txt"
+
+    - name: Copy another file with content
+      win_copy:
+        content: "File 2: This is the second test file!"
+        dest: "C:\\Temp\\AnsibleTest\\file2.txt"
+
+    - name: Verify the files
+      win_shell: |
+        if (Test-Path "C:\\Temp\\AnsibleTest\\file1.txt" -and Test-Path "C:\\Temp\\AnsibleTest\\file2.txt") {
+          Write-Output "Both files exist!"
+        } else {
+          Write-Output "One or more files are missing!"
+        }
+      register: file_check
+
+    - name: Display file verification result
+      debug:
+        msg: "{{ file_check.stdout }}"
